@@ -31,3 +31,9 @@ var ErrInvalidMaxUsers = errors.New("Invalid max user")
 
 //ErrInvalidMaxGroups Invalid max groups
 var ErrInvalidMaxGroups = errors.New("Invalid max groups")
+
+//ErrInvalidMaxGroups Duplicate groups
+var ErrDupUser = errors.New("Duplicate user name")
+
+//ErrInvalidMaxGroups Duplicate groups
+var ErrDupGroup = errors.New("Duplicate group name")

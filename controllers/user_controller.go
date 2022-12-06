@@ -8,31 +8,36 @@ import (
 	"CRUD_Api/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+
 )
 
 type CreateUserInput struct {
-	User_id  string `json:"user_id" binding:"required"`
-	Username string `json:"username" binding:"required"`
-	Email    string `json:"email" binding:"required"`
+	Username string 
+	Email    string 
 }
 
 type UpdateUserInput struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	Username string 
+	Email    string 
 }
 
 func CreateUser(c *gin.Context) {
 	var input CreateUserInput
+	newId := uuid.New()
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	data := models.User{User_id: input.User_id, Username: input.Username, Email: input.Email}
+	data := models.User{User_id: "SE" + newId.String(), Username: input.Username, Email: input.Email,}
 
-	service.CreateUser(data)
+	if err := service.CreateUser(data); err == nil {
+		c.JSON(http.StatusOK, gin.H{"data": "User created"})
+	} else {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrDupUser.Error()})
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": "User created"})
 }
 
 func FindAllUser(c *gin.Context) {

@@ -12,11 +12,11 @@ import (
 )
 
 type CreateGroupInput struct {
-	Groupname string `json:"groupname"`
+	Groupname string
 }
 
 type UpdateGroupInput struct {
-	Groupname string `json:"groupname"`
+	Groupname string
 }
 
 func CreateGroup(c *gin.Context) {
@@ -27,11 +27,14 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
-	data := models.Group{Groupid: newId.String(), Groupname: input.Groupname}
+	data := models.Group{Groupid:"Admin" + newId.String(), Groupname: input.Groupname}
 
-	service.CreateGroup(data)
+	if err := service.CreateGroup(data); err == nil {
+		c.JSON(http.StatusOK, gin.H{"data": "Group created"})
+	} else {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrDupGroup.Error()})
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": "Group created"})
 }
 
 func FindAllGroup(c *gin.Context) {
