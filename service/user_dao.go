@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FindAllUser(pageNum , MaxPerPage int) (users []models.User, err error) {
+func FindAllUser(pageNum, MaxPerPage int) (users []models.User, err error) {
 	var sql = `SELECT * FROM users LIMIT ? OFFSET ?`
 	err = models.DB.Raw(sql, models.MaxPerPage, (pageNum-1)*models.MaxPerPage).Scan(&users).Error
 	return users, err
@@ -28,11 +28,15 @@ func UpdateUser(user models.User, updatedUser models.User, c *gin.Context) error
 	return models.DB.Model(&user).Updates(&updatedUser).Error
 }
 
-func DeleteUser(user models.User, id string, c *gin.Context) error {
-	if err := models.DB.Where("user_id = ?", c.Param("user_id")).First(&user).Error; err != nil {
+func DeleteUser(user models.User, id string) error {
+	if err := models.DB.Where("user_id = ?", id).Error; err != nil {
 		return models.ErrNotFound
 	} else {
-		return models.DB.Delete(&user).Error
+		return models.DB.Where("user_id = ?", id).Delete(&user).Error
 	}
 
+}
+
+func AddUserToGroup(user models.GroupUser) error {
+	return models.DB.Create(&user).Error
 }

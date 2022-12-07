@@ -9,17 +9,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-
 )
 
 type CreateUserInput struct {
-	Username string 
-	Email    string 
+	Username string
+	Email    string
 }
 
 type UpdateUserInput struct {
-	Username string 
-	Email    string 
+	User_id  string `json:"user_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
+type AddUserToGroupInput struct {
+	User_id string `json:"user_id"`
+	Groupid string `json:"group_id"`
 }
 
 func CreateUser(c *gin.Context) {
@@ -30,7 +35,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	data := models.User{User_id: "SE" + newId.String(), Username: input.Username, Email: input.Email,}
+	data := models.User{User_id: "SE" + newId.String(), Username: input.Username, Email: input.Email}
 
 	if err := service.CreateUser(data); err == nil {
 		c.JSON(http.StatusOK, gin.H{"data": "User created"})
@@ -83,23 +88,45 @@ func UpdateUser(c *gin.Context) {
 	var user models.User
 	var input UpdateUserInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "JSON error"})
 	}
 
-	updatedUser := models.User{Username: input.Username, Email: input.Email}
+	updatedUser := models.User{User_id: input.User_id, Username: input.Username, Email: input.Email}
 
 	service.UpdateUser(user, updatedUser, c)
 	c.JSON(http.StatusOK, gin.H{"data": "User updated"})
 }
 
 func DeleteUser(c *gin.Context) {
-	var id string
+	var input UpdateUserInput
 	var user models.User
-	if err := service.DeleteUser(user, id, c); err != nil {
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "JSON error"})
+	}
+
+	if err := service.DeleteUser(user, input.User_id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": models.ErrNotFound.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": "User deleted"})
+}
+
+func AddUserToGroup(c *gin.Context) {
+	var input AddUserToGroupInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	data := models.GroupUser{User_id: input.User_id, Groupid: input.Groupid}
+
+	if err := service.AddUserToGroup(data); err == nil {
+		c.JSON(http.StatusOK, gin.H{"data": "User added to group successfully"})
+	} else {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrExistedInGroup.Error()})
+	}
+
 }

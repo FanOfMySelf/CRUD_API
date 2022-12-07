@@ -28,11 +28,11 @@ func UpdateGroup(group models.Group, updatedGroup models.Group, c *gin.Context) 
 	return models.DB.Model(&group).Updates(&updatedGroup).Error
 }
 
-func DeleteGroup(group models.Group, id string, c *gin.Context) error {
-	if err := models.DB.Where("groupid = ?", c.Param("groupid")).First(&group).Error; err != nil {
+func DeleteGroup(group models.Group, id string) error {
+	if err := models.DB.Where("groupid = ?", id).Error; err != nil {
 		return models.ErrNotFound
 	} else {
-		return models.DB.Delete(&group).Error
+		return models.DB.Where("groupid = ?", id).Delete(&group).Error
 	}
 
 }

@@ -37,3 +37,9 @@ var ErrDupUser = errors.New("Duplicate user name")
 
 //ErrInvalidMaxGroups Duplicate groups
 var ErrDupGroup = errors.New("Duplicate group name")
+
+//ErrExistedInGroup User is already in group
+var ErrExistedInGroup = errors.New("User is already in group")
+
+//ErrNotInGroup User is not in group
+var ErrNotInGroup = errors.New("User is not in group")

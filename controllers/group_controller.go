@@ -16,7 +16,8 @@ type CreateGroupInput struct {
 }
 
 type UpdateGroupInput struct {
-	Groupname string
+	GroupId 	string 
+	Groupname 	string
 }
 
 func CreateGroup(c *gin.Context) {
@@ -90,11 +91,15 @@ func UpdateGroup(c *gin.Context) {
 }
 
 func DeleteGroup(c *gin.Context) {
-	var id string
+	var input UpdateGroupInput
 	var group models.Group
-	if err := service.DeleteGroup(group, id, c); err != nil {
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "JSON error"})
+	}
+
+	if err := service.DeleteGroup(group, input.GroupId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": models.ErrNotFound.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
