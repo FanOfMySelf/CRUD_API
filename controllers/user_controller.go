@@ -100,11 +100,20 @@ func UpdateUser(c *gin.Context) {
 func DeleteUser(c *gin.Context) {
 	var input UpdateUserInput
 	var user models.User
+	var group_user models.GroupUser
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "JSON error"})
 	}
-
+	//del user
 	if err := service.DeleteUser(user, input.User_id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	//del user from group
+	if err := service.DeleteUserFromGroup(group_user, input.User_id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

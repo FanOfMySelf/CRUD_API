@@ -37,6 +37,11 @@ func DeleteUser(user models.User, id string) error {
 
 }
 
-func AddUserToGroup(user models.GroupUser) error {
-	return models.DB.Create(&user).Error
+func AddUserToGroup(data models.GroupUser) error {
+	return models.DB.Create(&data).Error
+}
+
+func DeleteUserFromGroup(group_user models.GroupUser, id string) error {
+	err := models.DB.Where("user_id = ?", id).Delete(&group_user).Error		
+	return err
 }
