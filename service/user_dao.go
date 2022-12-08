@@ -13,7 +13,7 @@ func FindAllUser(pageNum, MaxPerPage int) (users []models.User, err error) {
 }
 
 func FindUser(id string) (users models.User, err error) {
-	return users, models.DB.Find(&users, id).Error
+	return users, models.DB.Where("user_id = ?", id).Find(&users).Error
 }
 
 func CreateUser(user models.User) error {

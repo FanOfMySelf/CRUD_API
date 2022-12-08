@@ -21,8 +21,8 @@ func main() {
 	router.POST("/api/groups", controllers.CreateGroup)
 	router.GET("/api/groups", controllers.FindAllGroup)
 	router.GET("/api/groups/:groupid", controllers.FindGroup)
-	router.PATCH("/api/groups/:groupid", controllers.UpdateGroup)
-	router.DELETE("/api/groups/:groupid", controllers.DeleteGroup)
+	router.PATCH("/api/groups", controllers.UpdateGroup)
+	router.DELETE("/api/groups", controllers.DeleteGroup)
 
 	//GroupUser API
 	router.POST("/api/group-users", controllers.AddUserToGroup)

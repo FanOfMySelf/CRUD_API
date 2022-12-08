@@ -17,7 +17,7 @@ func FindAllGroup(pageNum , MaxPerPage int) (group []models.Group, err error) {
 }
 
 func FindGroup(id string) (group models.Group, err error) {
-	return group, models.DB.Find(&group, id).Error
+	return group, models.DB.Where("groupid = ?", id).Find(&group).Error
 }
 
 func UpdateGroup(group models.Group, updatedGroup models.Group, c *gin.Context) error {
@@ -34,5 +34,9 @@ func DeleteGroup(group models.Group, id string) error {
 	} else {
 		return models.DB.Where("groupid = ?", id).Delete(&group).Error
 	}
+}
 
+func DeleteGroupsFromUser(group_user models.GroupUser, id string) error {
+	err := models.DB.Where("Groupid = ?", id).Delete(&group_user).Error
+	return err
 }

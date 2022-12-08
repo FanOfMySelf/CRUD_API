@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"syreclabs.com/go/faker"
 )
 
 type CreateGroupInput struct {
@@ -16,8 +17,8 @@ type CreateGroupInput struct {
 }
 
 type UpdateGroupInput struct {
-	GroupId 	string 
-	Groupname 	string
+	GroupId   string
+	Groupname string
 }
 
 func CreateGroup(c *gin.Context) {
@@ -28,7 +29,7 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
-	data := models.Group{Groupid:"Admin" + newId.String(), Groupname: input.Groupname}
+	data := models.Group{Groupid: "Admin" + newId.String(), Groupname: faker.App().Name()}
 
 	if err := service.CreateGroup(data); err == nil {
 		c.JSON(http.StatusOK, gin.H{"data": "Group created"})
@@ -62,8 +63,8 @@ func FindAllGroup(c *gin.Context) {
 }
 
 func FindGroup(c *gin.Context) {
-	var id string
-	group, err := service.FindGroup(id)
+	groupid  := c.Param("groupid")
+	group, err := service.FindGroup(groupid)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -84,7 +85,7 @@ func UpdateGroup(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrNotFound.Error()})
 	}
 
-	updatedGroup := models.Group{Groupname: input.Groupname}
+	updatedGroup := models.Group{Groupid: input.GroupId,Groupname: input.Groupname}
 
 	service.UpdateGroup(group, updatedGroup, c)
 	c.JSON(http.StatusOK, gin.H{"data": "Group updated"})
@@ -93,11 +94,20 @@ func UpdateGroup(c *gin.Context) {
 func DeleteGroup(c *gin.Context) {
 	var input UpdateGroupInput
 	var group models.Group
+	var group_user models.GroupUser
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "JSON error"})
 	}
 
 	if err := service.DeleteGroup(group, input.GroupId); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	//del groups from user
+	if err := service.DeleteGroupsFromUser(group_user, input.GroupId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

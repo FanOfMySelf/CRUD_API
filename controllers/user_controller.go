@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"syreclabs.com/go/faker"
 )
 
 type CreateUserInput struct {
@@ -35,7 +36,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	data := models.User{User_id: "SE" + newId.String(), Username: input.Username, Email: input.Email}
+	data := models.User{User_id: "SE" + newId.String(), Username: faker.App().Name(), Email: faker.App().Name() + "@a.com"}
 
 	if err := service.CreateUser(data); err == nil {
 		c.JSON(http.StatusOK, gin.H{"data": "User created"})
@@ -69,8 +70,8 @@ func FindAllUser(c *gin.Context) {
 }
 
 func FindUser(c *gin.Context) {
-	var id string
-	users, err := service.FindUser(id)
+	user_id := c.Param("user_id")
+	users, err := service.FindUser(user_id)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -133,7 +134,7 @@ func AddUserToGroup(c *gin.Context) {
 	data := models.GroupUser{User_id: input.User_id, Groupid: input.Groupid}
 
 	if err := service.AddUserToGroup(data); err == nil {
-		c.JSON(http.StatusOK, gin.H{"data": "User added to group successfully"})
+		c.JSON(http.StatusOK, gin.H{"data": "Users added to group successfully"})
 	} else {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": models.ErrExistedInGroup.Error()})
 	}
