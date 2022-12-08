@@ -38,10 +38,19 @@ func DeleteUser(user models.User, id string) error {
 }
 
 func AddUserToGroup(data models.GroupUser) error {
-	return models.DB.Create(&data).Error
+	var groupuser models.GroupUser
+	sql := `SELECT * FROM group_users where user_id = ? and groupid = ?`
+	models.DB.Raw(sql, data.User_id, data.Groupid).Scan(&groupuser)
+
+	if (groupuser.User_id != "" && groupuser.Groupid != "") {
+		return models.ErrExistedInGroup
+	} else {
+		return models.DB.Create(&data).Error 
+	}
+
 }
 
 func DeleteUserFromGroup(group_user models.GroupUser, id string) error {
-	err := models.DB.Where("user_id = ?", id).Delete(&group_user).Error		
+	err := models.DB.Where("user_id = ?", id).Delete(&group_user).Error
 	return err
 }
