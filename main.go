@@ -27,6 +27,13 @@ func main() {
 	//GroupUser API
 	router.POST("/api/group-users", controllers.AddUserToGroup)
 
+	router.Static("/static", "./")
+	//router.LoadHTMLFiles("templates/index.html")
+	router.LoadHTMLGlob("./templates/*.html")
+	
+	router.GET("/", func(c *gin.Context) {
+       c.HTML(200, "index.html", map[string]string{"title": "about page"})
+  })
 	router.Run("localhost:8080")
 
 }
