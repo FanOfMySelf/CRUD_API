@@ -8,5 +8,5 @@ type User struct {
 	// in: strings
 	Email string `json:"email" gorm:"size:50;not null"`
 	//many to many rela with group user
-	Groups []Group `gorm:"many2many:group_user;association_foreignkey:User_id"`
+	//Groups []Group `gorm:"many2many:group_user;association_foreignkey:User_id"`
 }
