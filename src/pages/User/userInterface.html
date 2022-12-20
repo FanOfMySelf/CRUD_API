@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<style>
+    footer {
+        text-align: center;
+        width: 100%;
+        bottom: 0;
+        position: fixed;
+    }
+    
+    button {
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        /*optional*/
+        font-family: arial, sans-serif;
+        /*input has OS specific font-family*/
+        color: #069;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User main page</title>
+</head>
+
+<body>
+    <div id="User_page"></div>
+    <script type="application/javascript" src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script type="application/javascript" src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.2.2.min.js"></script>
+    <!--<script src="public/dist/js/bootstrap.js "></script>-->
+    <script type="text/babel" src="src/pages/User/userInterface.js"></script>
+
+
+</body>
+<footer>
+    <div id="UserPaging"></div>
+</footer>
+
+</html>

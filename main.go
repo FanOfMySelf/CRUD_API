@@ -4,7 +4,8 @@ import (
 	"CRUD_Api/controllers"
 	"CRUD_Api/models"
 
-	//"github.com/gin-gonic/contrib/static"
+	//"net/http"
+
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
@@ -26,20 +27,22 @@ func main() {
 	router.PATCH("/api/groups", controllers.UpdateGroup)
 	router.DELETE("/api/groups", controllers.DeleteGroup)
 
-	//GroupUser API
+	//GroupUser API	
 	router.POST("/api/group-users", controllers.AddUserToGroup)
 
-	router.Static("/static", "./templates")
-	//router.LoadHTMLFiles("templates/index.html")
-	router.LoadHTMLGlob("./templates/*")
-	//router.StaticFile("/users.js", ".templates/users.js")
-	//router.StaticFile("/test.js", ".templates/test.js")
-	router.Use(static.Serve("/templates", static.LocalFile("./templates", true)))
-
+	//Get HTML files
+	router.LoadHTMLGlob("src/*.html")
+	//router.LoadHTMLGlob("src/pages/Group/*.html")
+	//router.LoadHTMLGlob("src/pages/User/*.html")
+	router.Use(static.Serve("/", static.LocalFile("/src/pages", true)))
+	router.Use(static.Serve("/", static.LocalFile("/src/components/", true)))
+	//router.Static("/js", "/public/style/bootstrap/dist/js")	
+	router.Static("/src/pages","./src/pages")
+	router.Static("/src/components/","./src/components/")
+	 
 	router.GET("/", func(c *gin.Context) {
-       c.HTML(200, "index.html", map[string]string{"title": "about page"})
-  })
+		c.HTML(200, "index.html", map[string]string{"title": "index"})
+	})
+	router.Run()
 
-	router.Run("localhost:8080")
-  
 }
