@@ -94,8 +94,7 @@ const refreshPage = ()=>{
                     <th>ID</th>  
                     <th>Name</th>  
                     <th>Email</th>  
-                    <th></th>
-                    <th></th>
+
                 </tr>  
             </thead>
             <tbody>   
@@ -104,12 +103,7 @@ const refreshPage = ()=>{
                     <td>{user.user_id}</td>  
                     <td>{user.username}</td>  
                     <td>{user.email}</td>  
-                    <td>
-                        <button onClick={()=>OnUpdateUserDialogOpen(user.user_id,user.username,user.email)}>Update</button>
-                    </td>
-                    <td>
-                        <button onClick={()=>DeleteUserBtn(user.user_id,user.username,user.email)}>Delete</button>
-                    </td>
+  
                   </tr>  
                 ))}  
              </tbody>   

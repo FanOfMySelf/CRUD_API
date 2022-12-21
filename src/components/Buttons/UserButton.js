@@ -80,6 +80,31 @@ const OnUpdateUserDialogOpen = (userid , username, email)=>{
         </div>
     );
 };
- 
+
+const OnAddUserToGroupDialogOpen = (userid)=>{
+    return(
+        <div>
+            {
+                $("#dialog_add_user_to_group_from_user").dialog({
+                    resizable :false,
+                    width: 800,
+                    modal:true,
+                    position:{
+                        my:'center',
+                        at:'center'
+                    }
+
+                })
+            }
+            {document.getElementById("txtAddUserToGroupFromUser").value = userid}
+        </div>
+    );
+};
+
+const Home = () => {
+    return <h1>Home</h1>;
+  };
+  
+  export default Home;
 
 

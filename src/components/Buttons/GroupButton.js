@@ -51,3 +51,45 @@ const DeleteGroupBtn = (groupid,groupname) =>{
     );  
 };
 
+const OnUpdateGroupDialogOpen = (groupid , groupname)=>{
+    return(
+        <div>
+            {
+                $("#dialog_update_group").dialog({
+                    resizable :false,
+                    width: 800,
+                    modal:true,
+                    position:{
+                        my:'center',
+                        at:'center'
+                    }
+
+                })
+            }
+            {document.getElementById("txtUpdateGroupId").value = groupid}
+            {document.getElementById("txtUpdateGroupName").value = groupname}
+        </div>
+    );
+};
+
+const OnAddFromGroupDialogOpen = (groupid)=>{
+    return(
+        <div>
+            {
+                $("#dialog_add_user_to_group_from_group").dialog({
+                    resizable :false,
+                    width: 800,
+                    modal:true,
+                    position:{
+                        my:'center',
+                        at:'center'
+                    }
+
+                })
+            }
+            {document.getElementById("txtAddUserToGroupFromGroup").value = groupid}
+        </div>
+    );
+};
+ 
+
