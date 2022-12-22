@@ -31,18 +31,31 @@ func main() {
 	router.POST("/api/group-users", controllers.AddUserToGroup)
 
 	//Get HTML files
-	router.LoadHTMLGlob("src/*.html")
-	//router.LoadHTMLGlob("src/pages/Group/*.html")
-	//router.LoadHTMLGlob("src/pages/User/*.html")
+	router.LoadHTMLFiles("src/index.html","src/pages/Group/groupInterface.html","src/pages/User/userInterface.html")
 	router.Use(static.Serve("/", static.LocalFile("/src/pages", true)))
-	router.Use(static.Serve("/", static.LocalFile("/src/components/", true)))
-	//router.Static("/js", "/public/style/bootstrap/dist/js")	
-	router.Static("/src/pages","./src/pages")
+	router.Use(static.Serve("/Group", static.LocalFile("/src/pages/Group", true)))
+	router.Use(static.Serve("/User", static.LocalFile("/src/pages/User", true)))
+	router.Use(static.Serve("/components", static.LocalFile("/src/components", true)))
+	router.Use(static.Serve("/components/Buttons", static.LocalFile("/src/components/Buttons", true)))
+
+	router.Static("/src/pages","./src/pages") 
+	//router.Static("/src/pages/Group","./src/pages/Group")  //loi ko add dc do trung` duong` dan~
 	router.Static("/src/components/","./src/components/")
-	 
+	
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", map[string]string{"title": "index"})
 	})
+	router.GET("/Group", func(c *gin.Context) {
+		c.HTML(200, "groupInterface.html", map[string]string{"title": "index"})
+	})
+	router.GET("/User", func(c *gin.Context) {
+		c.HTML(200, "userInterface.html", map[string]string{"title": "index"})
+	})
+	
 	router.Run()
 
 }

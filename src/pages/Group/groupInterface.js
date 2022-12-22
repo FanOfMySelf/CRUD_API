@@ -2,7 +2,6 @@ import { findAllGroups,groupList,addNewGroup } from 'src/components/groupsApi.js
 import {UpdateGroupBtn,DeleteGroupBtn,OnAddFromGroupDialogOpen} from 'src/components/Buttons/GroupButton.js'
 import { userList } from '../../components/userApi';
 
-var groupList = [];
 var pageNum = 1;
 class GroupInterface extends React.Component {
     constructor(props) {
