@@ -39,7 +39,6 @@ func main() {
 	router.Use(static.Serve("/components/Buttons", static.LocalFile("/src/components/Buttons", true)))
 
 	router.Static("/src/pages","./src/pages") 
-	//router.Static("/src/pages/Group","./src/pages/Group")  //loi ko add dc do trung` duong` dan~
 	router.Static("/src/components/","./src/components/")
 	
 	router.NoRoute(func(c *gin.Context) {
