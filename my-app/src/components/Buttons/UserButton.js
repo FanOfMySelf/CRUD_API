@@ -1,5 +1,7 @@
 import React from "react"; 
-import {findAllUsers,findOneUser,addNewUser,updateUser,deleteUser,addUserToGroup} from 'src/components/userApi.js'
+import ReactDOM from 'react-dom/client';
+import $ from "jquery"
+import {findAllUsers,findOneUser,addNewUser,updateUser,deleteUser,addUserToGroup} from '../Api/userApi'
 
 class UserButtons extends React.Component {
   constructor(props) {
@@ -10,7 +12,7 @@ class UserButtons extends React.Component {
     };
   }
 }
-const FindAllUsersBtn = (page) => {
+export const FindAllUsersBtn = (page) => {
     return (
     <div>
         <button onClick={() => findAllUsers(page)}>Find all</button>
@@ -18,7 +20,7 @@ const FindAllUsersBtn = (page) => {
     );    
 };
 
-const FinOneUserBtn = userid =>{
+export const FinOneUserBtn = userid =>{
     return(
     <div>
         <button onClick={() => findOneUser(userid)}>Find one</button>
@@ -26,7 +28,7 @@ const FinOneUserBtn = userid =>{
     );  
 };
 
-const AddNewUserBtn = (username,email) =>{
+export const AddNewUserBtn = (username,email) =>{
     return(
     <div>
         <button onClick={() => addNewUser(username,email)}>Add new</button>
@@ -34,7 +36,7 @@ const AddNewUserBtn = (username,email) =>{
     );  
 };
 
-const UpdateUserBtn = (userid , username, email) =>{
+export const UpdateUserBtn = (userid , username, email) =>{
     return(
     <div>
         <button onClick={() => updateUser(userid , username, email)}>Update</button>
@@ -42,7 +44,7 @@ const UpdateUserBtn = (userid , username, email) =>{
     );  
 };
 
-const DeleteUserBtn = (userid , username, email) =>{
+export const DeleteUserBtn = (userid , username, email) =>{
     return(
     <div>
         <button onClick={()=>deleteUser(userid , username, email)}>Delete</button>
@@ -50,7 +52,7 @@ const DeleteUserBtn = (userid , username, email) =>{
     );  
 };
 
-const AddUserToGroupBtn = (userid, groupid) =>{
+export const AddUserToGroupBtn = (userid, groupid) =>{
     return(
     <div>
         <button onClick={()=>addUserToGroup(userid, groupid)}>Add to group</button>
@@ -59,7 +61,7 @@ const AddUserToGroupBtn = (userid, groupid) =>{
 };
 
 
-const OnUpdateUserDialogOpen = (userid , username, email)=>{
+export const OnUpdateUserDialogOpen = (userid , username, email)=>{
     return(
         <div>
             {
@@ -81,7 +83,7 @@ const OnUpdateUserDialogOpen = (userid , username, email)=>{
     );
 };
 
-const OnAddUserToGroupDialogOpen = (userid)=>{
+export const OnAddUserToGroupDialogOpen = (userid)=>{
     return(
         <div>
             {

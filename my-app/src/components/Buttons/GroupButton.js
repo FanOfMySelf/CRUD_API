@@ -1,8 +1,10 @@
-import React from "react"; 
-import {findAllGroups,findOneGroup,addNewGroup,updateGroup,deleteGroup} from 'src/components/groupsApi.js'
-import {addUserToGroup} from 'src/components/userApi.js'
+import React from "react";
+import ReactDOM from 'react-dom/client'; 
+import $ from 'jquery';
+import {findAllGroups,findOneGroup,addNewGroup,updateGroup,deleteGroup} from '../Api/groupsApi'
+import {addUserToGroup} from '../Api/userApi'
 class GroupButtons extends React.Component {
-    constructor(props) {
+ constructor(props) {
       super(props);
       this.state = {
         error: null,
@@ -11,7 +13,7 @@ class GroupButtons extends React.Component {
     }
   }
 
-const FindAllGroupsBtn = (page) => {
+export const FindAllGroupsBtn = (page) => {
     return (
     <div>
         <button onClick={() => findAllGroups(page)}>Find all</button>
@@ -19,7 +21,7 @@ const FindAllGroupsBtn = (page) => {
     );    
 };
 
-const FinOneGroupBtn = (groupid) =>{
+export const FinOneGroupBtn = (groupid) =>{
     return(
     <div>
         <button onClick={() => findOneGroup(groupid)}>Find one</button>
@@ -27,7 +29,7 @@ const FinOneGroupBtn = (groupid) =>{
     );  
 };
 
-const AddNewGroupBtn = (groupname) =>{
+export const AddNewGroupBtn = (groupname) =>{
     return(
     <div>
         <button onClick={() => addNewGroup(groupname)}>Add new</button>
@@ -35,7 +37,7 @@ const AddNewGroupBtn = (groupname) =>{
     );  
 };
 
-const UpdateGroupBtn = (groupid,groupname) =>{
+export const UpdateGroupBtn = (groupid,groupname) =>{
     return(
     <div>
         <button onClick={() => updateGroup(groupid, groupname)}>Update</button>
@@ -43,7 +45,7 @@ const UpdateGroupBtn = (groupid,groupname) =>{
     );  
 };
 
-const DeleteGroupBtn = (groupid,groupname) =>{
+export const DeleteGroupBtn = (groupid,groupname) =>{
     return(
     <div>
         <button onClick={() => deleteGroup(groupid,groupname)}>Delete</button>
@@ -51,7 +53,15 @@ const DeleteGroupBtn = (groupid,groupname) =>{
     );  
 };
 
-const OnUpdateGroupDialogOpen = (groupid , groupname)=>{
+export const AddUserToGroupBtn = (userid, groupid) =>{
+    return(
+    <div>
+        <button onClick={()=>addUserToGroup(userid, groupid)}>Add to group</button>
+    </div>
+    );  
+};
+
+export const OnUpdateGroupDialogOpen = (groupid , groupname)=>{
     return(
         <div>
             {
@@ -72,7 +82,7 @@ const OnUpdateGroupDialogOpen = (groupid , groupname)=>{
     );
 };
 
-const OnAddFromGroupDialogOpen = (groupid)=>{
+export const OnAddFromGroupDialogOpen = (groupid)=>{
     return(
         <div>
             {

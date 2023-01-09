@@ -1,22 +1,20 @@
-import {findAllUsers,userList,addNewUser} from 'src/components/userApi.js'
-import {UpdateUserBtn,DeleteUserBtn,AddUserToGroupBtn,OnUpdateUserDialogOpen,OnAddUserToGroupDialogOpen} from 'src/components/Buttons/UserButton.js'
-import {groupList} from  'src/components/groupsApi.js'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import {findAllUsers,userList,addNewUser} from '../../components/Api/userApi'
+import {UpdateUserBtn,DeleteUserBtn,AddUserToGroupBtn,OnUpdateUserDialogOpen,OnAddUserToGroupDialogOpen} from '../../components/Buttons/UserButton'
+import {groupList} from  '../../components/Api/groupsApi'
 
 var pageNum = 1;
-class UserList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-
+export default class UserList extends React.Component {
   componentDidMount() {
     findAllUsers(pageNum);
     pageNum = 1;
 
   }
   render(){
-    <div>
-    <div className="container">         
+    return(
+      <div>
+        <div className="container">         
             <table className="table table-bordered">  
             <thead>
             <tr>  
@@ -48,9 +46,10 @@ class UserList extends React.Component {
              </tbody>   
             </table>  
         
-        </div>  
+      </div>  
     <button onClick={()=>addNewUser()}>Add user</button>
     </div>
+    );
   }
 }
 
@@ -61,9 +60,6 @@ function changePageNum(newNum) {
 } 
 
 class UserPaging extends React.Component {
-    constructor(props) {
-      super(props);
-    }
     render(){
         return Array.from(
             { length: userList.length },
@@ -144,11 +140,19 @@ function AddUserToGroupFromUser (){
     </div>
 )
 
-  ReactDOM.render(<UserPaging/>, document.querySelector('#UserPaging'));
-  ReactDOM.render(
-    <div>
+    const UserRoot = ReactDOM.createRoot(document.getElementById('root'));
+    UserRoot.render(
+      <React.StrictMode>
+        <UserPaging />
+      </React.StrictMode>
+    );  
+     
+    const User_page = ReactDOM.createRoot(document.getElementById('UserPaging'));
+    User_page.render(
+      <div>
       <UserList/>
       {UserUpdateDialog}
       {AddUserToGroupFromUserDialog}
-    </div>, 
-    document.querySelector('#User_page'));
+      </div>
+    );
+ 

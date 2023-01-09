@@ -1,41 +1,17 @@
 import React from "react"; 
-import {OnUpdateUserDialogOpen} from 'src/components/Buttons/UserButton.js'
-export var userList = [];
 
-class UserList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      users: []
-    };
-  }
-}
-/*
-  componentDidMount() {
-    fetch("http://localhost:8080/api/users?max-per-page=5&page=2")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          var strRst = JSON.stringify(result)
-          var rcpt = JSON.parse(strRst)
-          userList = rcpt.data
-          console.log(userList)
-          this.setState({
-            isLoaded: true,
-            users: userList
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-  }
-*/
+export var userList = [];
+var errorMsg = '';
+// class UserList extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       error: null,
+//       isLoaded: false,
+//       users: []
+//     };
+//   }
+// }
 
 const refreshPage = ()=>{
   window.location.reload();
@@ -67,24 +43,23 @@ const refreshPage = ()=>{
             var rcpt = JSON.parse(strRst)
             userList = rcpt.data
             console.log(userList)
-            this.setState({
-              isLoaded: true,
-              users: userList
-            });
+            // this.setState({
+            //   isLoaded: true,
+            //   users: userList
+            // });
           },
           (error) => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
+            errorMsg = error
+            console.log(errorMsg)
+            // this.setState({
+            //   isLoaded: true,
+            //   error
+            // });
           }
         )
 
-      const { error, isLoaded } = this.state;
-      if (error) {
-        return <div>Error: {error.message}</div>;
-      } else if (!isLoaded) {
-        return <div>Loading...</div>;
+      if (errorMsg) {
+        return <div>Error: {errorMsg}</div>;
       } else {
         return (       
           <div className="container">         

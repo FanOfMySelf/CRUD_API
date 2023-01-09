@@ -1,20 +1,18 @@
-import { findAllGroups,groupList,addNewGroup } from 'src/components/groupsApi.js'
-import {UpdateGroupBtn,DeleteGroupBtn,OnAddFromGroupDialogOpen} from 'src/components/Buttons/GroupButton.js'
-import { userList } from '../../components/userApi';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { findAllGroups,groupList,addNewGroup } from '../../components/Api/groupsApi'
+import { UpdateGroupBtn,DeleteGroupBtn,OnAddFromGroupDialogOpen,OnUpdateGroupDialogOpen,AddUserToGroupBtn } from '../../components/Buttons/GroupButton'
+import { userList } from '../../components/Api/userApi';
 
 var pageNum = 1;
-class GroupInterface extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
+export default class GroupInterface extends React.Component {
     componentDidMount() {
         findAllGroups(pageNum);
     }
 
     render(){
-        <div>         
+        return(
+          <div>         
         <table className="table table-bordered">  
         <thead>
         <tr>  
@@ -46,16 +44,12 @@ class GroupInterface extends React.Component {
         <button onClick={()=>addNewGroup()}>Add group</button>           
     </div>  
 
+        );
+        
     }
 }
 
-class GroupPaging extends React.Component
-{
-    constructor(props) {
-        super(props);
-
-    }
-
+class GroupPaging extends React.Component {
     render(){
         return Array.from(
             { length: groupList.length },
@@ -137,11 +131,18 @@ var AddUserToGroupFromGroupDialog =  React.createElement("div",{
   </div>
 )
 
- ReactDOM.render(<GroupPaging/>, document.querySelector('#GroupPaging'));
- ReactDOM.render(
-    <div>
-        <GroupInterface/>
-        {GroupUpdateDialog}
-        {AddUserToGroupFromGroupDialog}
-    </div>, 
-    document.querySelector('#Group_page'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <GroupInterface />
+  </React.StrictMode>
+);
+
+const rootFooter = ReactDOM.createRoot(document.getElementById('UserPaging'));
+rootFooter.render(
+  <div>
+  <GroupPaging/>
+  {GroupUpdateDialog}
+  {AddUserToGroupFromGroupDialog}
+</div>
+);

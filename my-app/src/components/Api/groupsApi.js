@@ -1,39 +1,6 @@
 import React from "react"; 
-import {OnUpdateGroupDialogOpen,DeleteGroupBtn} from 'src/components/Buttons/GroupButton.js'
 export var groupList = [];
-
-class GroupList extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        error: null,
-        isLoaded: false,
-        group: []
-      };
-    }
-}
-    // componentDidMount() {
-    //   fetch("http://localhost:8080/api/groups?max-per-page=5&page=1")
-    //     .then(res => res.json())
-    //     .then(
-    //       (result) => {
-    //         var strRst = JSON.stringify(result)
-    //         var rcpt = JSON.parse(strRst)
-    //         groupList = rcpt.data
-    //         console.log(groupList)
-    //         this.setState({
-    //           isLoaded: true,
-    //           group: groupList
-    //         });
-    //       },
-    //       (error) => {
-    //         this.setState({
-    //           isLoaded: true,
-    //           error
-    //         });
-    //       }
-    //     )
-    // }
+var errorMsg = '';
 
       function capFirst(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -61,24 +28,23 @@ class GroupList extends React.Component {
             var rcpt = JSON.parse(strRst)
             groupList = rcpt.data
             console.log(groupList)
-            this.setState({
-              isLoaded: true,
-              group: groupList
-            });
+            // this.setState({
+            //   isLoaded: true,
+            //   group: groupList
+            // });
           },
           (error) => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
+            errorMsg = error
+            console.log(errorMsg)
+            // this.setState({
+            //   isLoaded: true,
+            //   error
+            // });
           }
         )
               
-      const { error, isLoaded } = this.state;
-      if (error) {
-        return <div>Error: {error.message}</div>;
-      } else if (!isLoaded) {
-        return <div>Loading...</div>;
+      if (errorMsg) {
+        return <div>Error: {errorMsg}</div>;
       } else {
         return (       
           <div>         
@@ -162,7 +128,7 @@ class GroupList extends React.Component {
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ "groupname": groupname })
+          body: JSON.stringify({ "groupname": generateName() })
        };
            fetch('http://localhost:8080/api/groups', requestOptions)
           .then(async response => {

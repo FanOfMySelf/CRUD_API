@@ -31,15 +31,12 @@ func main() {
 	router.POST("/api/group-users", controllers.AddUserToGroup)
 
 	//Get HTML files
-	router.LoadHTMLFiles("src/index.html","src/pages/Group/groupInterface.html","src/pages/User/userInterface.html")
-	router.Use(static.Serve("/", static.LocalFile("/src/pages", true)))
-	router.Use(static.Serve("/Group", static.LocalFile("/src/pages/Group", true)))
-	router.Use(static.Serve("/User", static.LocalFile("/src/pages/User", true)))
-	router.Use(static.Serve("/components", static.LocalFile("/src/components", true)))
-	router.Use(static.Serve("/components/Buttons", static.LocalFile("/src/components/Buttons", true)))
-
-	router.Static("/src/pages","./src/pages") 
-	router.Static("/src/components/","./src/components/")
+	router.LoadHTMLFiles("my-app/public/index.html","my-app/src/pages/Group/groupInterface.html","my-app/src/pages/User/userInterface.html")
+	router.Use(static.Serve("/", static.LocalFile("my-app/src/pages", true)))
+	router.Use(static.Serve("/Group", static.LocalFile("my-app/src/pages/Group", false)))
+	router.Use(static.Serve("/User", static.LocalFile("my-app/src/pages/User", false)))
+	router.Use(static.Serve("/components/Api", static.LocalFile("my-app/src/components/Api", false)))
+	router.Use(static.Serve("/components/Buttons", static.LocalFile("my-app/src/components/Buttons", false)))
 	
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
@@ -55,6 +52,6 @@ func main() {
 		c.HTML(200, "userInterface.html", map[string]string{"title": "index"})
 	})
 	
-	router.Run()
+	router.Run("localhost:3000")
 
 }
